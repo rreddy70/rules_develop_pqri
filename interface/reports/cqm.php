@@ -56,6 +56,19 @@ $provider  = trim($_POST['form_provider']);
     document.forms[0].submit();
  }
 
+ function GenXml() {
+	  top.restoreSession();
+	  if ( (theform.rule_filter.value != 'cqm') || (theform.plan_filter.value != 'cqm') || (theform.provider.value != 'collate_inner') ){
+		  var sMsg = '1. Rule set must be CQM.\n2. Plan set must be CQM\n3. Provider must be Format B';
+		  alert(sMsg);
+		  return false;
+	  }
+	  
+	  var sLoc = '../../custom/export_registry_xml.php?provider=' + theform.provider.value + '&rule_filter=' + theform.rule_filter.value + '&target_date=' + theform.target_date.value + '&plan_filter=' + theform.plan_filter.value + '&organize_method=' + theform.organize_method.value;;
+	  dlgopen(sLoc, '_blank', 600, 500);
+	  return false;
+}
+
 </script>
 
 <style type="text/css">
@@ -208,6 +221,11 @@ $provider  = trim($_POST['form_provider']);
 							<?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
 						</span>
 					</a>
+					<a href='#' class='css_button' onclick='return GenXml()'>
+						<span>
+							<?php echo htmlspecialchars( xl('Send'), ENT_NOQUOTES); ?>
+						</span>
+					</a>
 					<?php } ?>
 				</div>
 			</td>
@@ -290,8 +308,8 @@ $provider  = trim($_POST['form_provider']);
        }
      }
      else { // isset($row['is_sub'])
-       echo generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$row['action_category']);
-       echo ": " . generate_display_field(array('data_type'=>'1','list_id'=>'rule_action'),$row['action_item']);
+       //echo generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$row['action_category']);
+       //echo ": " . generate_display_field(array('data_type'=>'1','list_id'=>'rule_action'),$row['action_item']);
      }
      echo "</td>";
      echo "<td align='center'>" . $row['total_patients'] . "</td>";
@@ -350,6 +368,11 @@ $provider  = trim($_POST['form_provider']);
 <?php } ?>
 
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
+<input type='hidden' name='provider' value='<?php echo $provider?>'/>
+<input type='hidden' name='rule_filter'  value='<?php echo $rule_filter?>'/>
+<input type='hidden' name='target_date' value='<?php echo $target_date?>'/>
+<input type='hidden' name='plan_filter' value='<?php echo $plan_filter?>'/>
+<input type='hidden' name='organize_method' value='<?php echo $organize_method?>'/>
 
 </form>
 
